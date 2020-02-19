@@ -1,12 +1,9 @@
 var winston = require('winston');
 
 function getLogger(module) {
-	
 	// отобразим метку с именем файла, который выводить сообщение
 	var path = module.filename.split('/').slice(-2).join('/');
-	
 	return new winston.Logger({
-		
 		transports: [
 			new winston.transports.Console({
 				colorize: true,
