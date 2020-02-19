@@ -1,15 +1,10 @@
-
 var express = require('express');
 
 // модуль для парсинга пути
 var path = require('path');
-
 var log = require('./libs/log.js')(module);
-
 var app = express();
-
 var config = require('./libs/config');
-
 var ArticleModel = require('./libs/mongoose.js').ArticleModel;
 
 // віддаємо фавіконку, також можемо свою віддати(можливо потрібен тіліки шлях)
@@ -29,17 +24,10 @@ app.use(app.router);
 
 app.use(express.static(path.join(__dirname, "public")));
 
-// запуск статического файлового сервера, который смотрит на папку public/ (в нашем случае отдаёт index.html)
-//app.get('/api', function(req, res) {
-	
-	//res.send('API is running');
-//});
-
 app.listen(config.get('port'), function() {
 	
 	log.info(`Express server listening on port ${config.get('port')}`);
 });
-
 
 // -------------------------- Обработка ошыбок
 app.use(function(req, res, next) {
@@ -67,18 +55,14 @@ app.get('/ErrorExample', function(req, res, next) {
 });
 // -------------------------- Обработка ошыбок
 
-
-
 //---------------------------------------------- api functions: GET, POST, PUT, DELETE
 app.get('/api/articles', function(req, res) {
 	
 	return ArticleModel.find(function(err, articles) {
 		
 		if (!err) {
-			
 			return res.send(articles);
 		} else {
-			
 			res.statusCode = 500;
 			log.error('Internal error(%d): %s', res.statusCode, err.message);
 			
@@ -106,7 +90,6 @@ app.post('/api/articles', function(req, res) {
 				article: article
 			});
 		} else {
-			
 			console.log(err);
 			
 			if (err.name == 'ValidationError') {
@@ -116,7 +99,6 @@ app.post('/api/articles', function(req, res) {
 				res.statusCode = 500;
 				res.send({error: 'Server error'});
 			}
-			
 			log.error(`Internal error(%d): %s`, res.statusCode, err.message);
 		}
 	});
@@ -137,7 +119,6 @@ app.get('/api/articles/:id', function(req, res) {
 				article: article
 			});
 		} else {
-			
 			res.statusCode = 500;
 			log.error('Internal error(%d): %s', res.statusCode, err.message);
 			return res.send({error: 'Server error'});
@@ -162,17 +143,14 @@ app.put('/api/articles/:id', function(req, res) {
 		return article.save(function(err) {
 			
 			if (!err) {
-				
 				log.info("article updated");
 				return res.send({status: 'OK', article: article});
 			} else {
 				
 				if (err.name == 'ValidationError') {
-					
 					res.statusCode = 400;
 					res.send({error: 'Validation error'});
 				} else {
-					
 					res.statusCode = 500;
 					res.send({error: 'Server error'});
 				}
@@ -188,7 +166,6 @@ app.delete('/api/articles/:id', function(req, res) {
 	return ArticleModel.findById(req.params.id, function (err, article) {
 		
 		if (!article) {
-			
 			res.statusCode = 400;
 			return res.send({error: 'Not found'});
 		}
