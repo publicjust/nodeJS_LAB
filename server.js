@@ -23,7 +23,7 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.listen(config.get('port'), function() {
-	log.info(`Express server listening on port ${config.get('port')}`);
+	log.info('Express server listening on port '+config.get('port'));
 });
 
 // -------------------------- Обработка ошыбок
@@ -82,7 +82,7 @@ app.post('/api/articles', function(req, res) {
 				res.statusCode = 500;
 				res.send({error: 'Server error'});
 			}
-			log.error(`Internal error(%d): %s`, res.statusCode, err.message);
+			log.error('Internal error(%d): %s', res.statusCode, err.message);
 		}
 	});
 });
